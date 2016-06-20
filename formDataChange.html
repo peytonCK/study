@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width , initial-scale=1.0 , user-scalable=0 , minimum-scale=1.0 , maximum-scale=1.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>JS如何判断表单数据是否改变</title>
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link href="./style.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="./jquery.min.js"></script>
+</head>
+<body>
+	<div id="header-wrap">
+		<div id="header">
+			<div class="section">
+				<a class="logo" href="http://www.guopeidong.com/" title="GPD" rel="home">
+					<img src="http://www.guopeidong.com/wp-content/uploads/2014/06/gpd.png" alt="GPD"></a>
+				<span class="target-words">前端开发-郭佩东</br> <i>Write more, Think more!</i>
+			</span>
+		</div>
+	</div>
+</div>
+
+<div id="content-wrap">
+	<div id="content" class="section" style="min-height: 300px; background: #ffffff; margin-top:20px; padding:50px;">
+		<h1>JS如何判断表单数据是否改变的Demo</h1>
+		<br/>
+		<br/>
+		<form id="form1" action="/" method="get">
+			<ul>
+				<li>
+					<label>姓名</label>
+					<input type="text" name="name" />
+					<br/>
+				</li>
+				<li>
+					<label>密码</label>
+					<input type="password" name="password" />
+					<br/>
+				</li>
+				<li>
+					<label>性别</label>
+					<input type="radio" name="sex" value="1" />
+					男
+					<input type="radio" name="sex" value="2" />
+					女
+					<br/>
+				</li>
+				<li>
+					<label>爱好</label>
+					<input type="checkbox" name="fav" value="1" />
+					蓝球
+					<input type="checkbox" name="fav" value="2" />
+					足球
+					<input type="checkbox" name="fav" value="3" />
+					排球
+					<input type="checkbox" name="fav" value="4" />
+					桌球
+					<br/>
+				</li>
+				<li>
+					<label>学历</label>
+					<select name="studyLevel">
+						<option value="1" selected>小学</option>
+						<option value="2">中学</option>
+						<option value="3">中专</option>
+						<option value="4">大学</option>
+					</select>
+					<br/>
+				</li>
+				<li>
+					<a id="submit1" href="javascript:void(0)">每个元素值对比法进行判断</a>
+					<br/>
+					<a id="submit2" href="javascript:void(0)">Jquey表单数据序列化前后对比法进行判断</a>
+				</li>
+			</ul>
+		</form>
+</div>
+</div>
+
+<div id="footer-wrap">
+	<div class="goTop">
+		<a id="rocket" href="#top" title="返回顶部" class="show"> <i></i>
+		</a>
+	</div>
+	<div id="footer" class="section">
+		<p>Write more, Think more!</p>
+		<p>Copyright©2014-2016 郭佩东博客</p>
+	</div>
+</div>
+
+
+<script>
+var formInitData="";
+$(function(){
+  formInitData=$("#form1").serialize();
+});
+//判断方法一
+function isFormChanged(formId) {  
+    var isChanged = false;  
+    var form = document.getElementById(formId);  
+    for (var i = 0; i < form.elements.length; i++) {  
+        var element = form.elements[i];  
+        var type = element.type;  
+        if (type == "text" || type == "hidden" || type == "textarea" || type == "button") {  
+            if (element.value != element.defaultValue) {  
+                isChanged = true;  
+                break;  
+            }  
+        } else if (type == "radio" || type == "checkbox") {  
+            if (element.checked != element.defaultChecked) {  
+                isChanged = true;  
+                break;  
+            }  
+        } else if (type == "select-one"|| type == "select-multiple") {  
+            for (var j = 0; j < element.options.length; j++) {  
+                if (element.options[j].selected != element.options[j].defaultSelected) {  
+                    isChanged = true;  
+                    break;  
+                }  
+            }  
+        } else {   
+            //  etc...  
+        }       
+    }      
+
+    return isChanged;  
+}  
+
+//判断方法二
+function isFormChanged2(formId,formInitData){
+  var formSubmitData=$("#form1").serialize();
+  return formInitData==formSubmitData?false:true;
+}
+
+
+document.getElementById('submit1').onclick=function(){
+	var isChanged=isFormChanged("form1");
+	alert( isChanged?"表单已被修改！":"未修改表单！");  
+}
+
+document.getElementById('submit2').onclick=function(){
+	var isChanged2=isFormChanged2("form1",formInitData);
+	alert( isChanged2?"表单已被修改！":"未修改表单！");  
+}
+
+</script>
+
+</body>
+</html>
