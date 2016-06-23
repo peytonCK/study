@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width , initial-scale=1.0 , user-scalable=0 , minimum-scale=1.0 , maximum-scale=1.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>js中的new操作符</title>
+	<link href="./style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div id="header-wrap">
+		<div id="header">
+			<div class="section">
+				<a class="logo" href="http://www.guopeidong.com/" title="GPD" rel="home">
+					<img src="http://www.guopeidong.com/wp-content/uploads/2014/06/gpd.png" alt="GPD"></a>
+				<span class="target-words">前端开发-郭佩东</br> <i>Write more, Think more!</i>
+			</span>
+		</div>
+	</div>
+</div>
+
+<div id="content-wrap">
+	<div id="content" class="section" style="min-height: 300px; background: #ffffff; margin-top:20px; padding:50px;">
+		<h1>这是用来测试js中的new操作符的Demo</h1><br/><br/>
+		<script>
+		   //首先，new操作符是在构造函数中创建一个隐藏的对象，并将构造函数的this指向此对象，给此对象进行添加属性和方法，最后返回这个对象 如下代码所示
+		   function Person(name,age){
+              this.name=name;
+              this.age=age;
+              this.sayHi=function(){
+              	alert("Hello my name is "+this.name+" !");
+              }
+		   }
+           var person1=new Person('gpd',28);
+           /*
+            这里相当于做了如下操作
+            function Person(name,age){
+              //this={};
+              this.name=name;
+              this.age=age;
+              this.sayHi=function(){
+              	alert("Hello my name is "+this.name+" !");
+              }
+              //return this;
+		    }
+           */
+        // person1.sayHi();//Hello my name is gpd !
+
+           //那去掉new会是什么效果呢？
+           var person2=Person('gpd',28);
+           //person2.sayHi();//Uncaught TypeError: Cannot read property 'sayHi' of undefined
+           //通过上面就知道了person2为undefined,因为此时Person为普通函数，又没返回值。
+
+           //OK,你可能觉得既然new做了三件事，那我直接写进去会怎么样呢？
+           function Student(name,level){
+               //this={};//Uncaught ReferenceError: Invalid left-hand side in assignment 不能给this赋值，this指函数的执行环境,之后写篇文章详细介绍
+               this.name=name;
+               this.level=level;
+               this.sayLevel=function(){
+               	 console.log("My level is "+this.level+" !");
+               };
+               return this;//如果有new操作符，这句可有可没有，默认返回新对象
+           }
+           /*
+           function Student(name,level){
+               //this={};//Uncaught ReferenceError: Invalid left-hand side in assignment 不能给this赋值，this指函数的执行环境,之后写篇文章详细介绍
+               var object={};
+               object.name=name;
+               object.level=level;
+               object.sayLevel=function(){
+               	 console.log("My level is "+this.level+" !");
+               };
+               return object;//如果有new操作符，这句可有可没有，默认返回新对象
+           }
+
+           function Student(name,level){
+               //this={};//Uncaught ReferenceError: Invalid left-hand side in assignment 不能给this赋值，this指函数的执行环境,之后写篇文章详细介绍
+               var object={};
+               object.name=name;
+               object.level=level;
+               object.sayLevel=function(){
+               	 console.log("My level is "+this.level+" !");
+               };
+               return Array();//如果有new操作符，这句可有可没有，默认返回新对象
+           }
+
+           function Student(name,level){
+               //this={};//Uncaught ReferenceError: Invalid left-hand side in assignment 不能给this赋值，this指函数的执行环境,之后写篇文章详细介绍
+               var object={};
+               object.name=name;
+               object.level=level;
+               object.sayLevel=function(){
+               	 console.log("My level is "+this.level+" !");
+               };
+               return 21212312312;//如果有new操作符，这句可有可没有，默认返回新对象
+           }*/
+
+           var student1=new Student('gpdS',19);
+           console.log(student1.constructor);//构造函数是Student 如果返回的是引用型对象，则student的构造函数为引用类型
+           console.log(student1 instanceof Student);//true student1是Student的实例 	如果返回的是引用型对象，student为返回对象类型的实例
+           console.log(student1);//如果Student返回是基本类型变量，Student {}; 如果返回的是引用型对象，则值为返回对象
+           //student1.sayLevel();//My level is 19 !
+
+           var student2=Student('gpdS2',20);//这个时候 return this中的this指的应该就是当前函数的执行环境对象window
+           console.log(student2);//返回的对象或值
+           console.log(student2.constructor);//构造函数是Window
+           console.log(student2 instanceof Student);//false student2不是Student的实例
+           console.log(student2 instanceof Object);//true student2是Object的实例
+           console.log(student2===window);//true 证明student2此时是window对象
+           student2.sayLevel();//My level is 20 ! 
+           window.sayLevel();//My level is 20 !
+           var test="test";
+           console.log(student2.test);//test
+
+
+
+
+		</script>
+	</div>
+</div>
+
+<div id="footer-wrap">
+	<div class="goTop">
+		<a id="rocket" href="#top" title="返回顶部" class="show"> <i></i>
+		</a>
+	</div>
+	<div id="footer" class="section">
+		<p>Write more, Think more!</p>
+		<p>Copyright©2014-2016 郭佩东博客</p>
+	</div>
+</div>
+</body>
+</html>
