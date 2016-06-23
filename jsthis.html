@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width , initial-scale=1.0 , user-scalable=0 , minimum-scale=1.0 , maximum-scale=1.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>js中的new操作符</title>
+	<link href="./style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div id="header-wrap">
+		<div id="header">
+			<div class="section">
+				<a class="logo" href="http://www.guopeidong.com/" title="GPD" rel="home">
+					<img src="http://www.guopeidong.com/wp-content/uploads/2014/06/gpd.png" alt="GPD"></a>
+				<span class="target-words">前端开发-郭佩东</br> <i>Write more, Think more!</i>
+			</span>
+		</div>
+	</div>
+</div>
+
+<div id="content-wrap">
+	<div id="content" class="section" style="min-height: 300px; background: #ffffff; margin-top:20px; padding:50px;">
+		<h1>这是用来测试js中的this的Demo</h1><br/><br/>
+		<script>
+           function OuterFun(){
+     var Name="Outer Name";
+     
+     return function (){
+       var  Name="Inner Name" ;
+       console.log(Name+","+this.Name);
+     }
+}
+var obj={};
+obj.Name="object";
+OuterFun().call(obj);//"Inner Name, Outer Name"
+
+function JSClass(){}
+
+JSClass.prototype.m_property=100;
+JSClass.prototype.toString=function(){
+	console.log(this.m_property);
+}
+var obj2=new JSClass();
+obj2.toString();//100
+JSClass.prototype.toString();//100
+var fun=JSClass.prototype.toString;
+fun();
+var fun2=function(){JSClass.prototype.toString()};
+fun2();
+
+var name="gpd";
+var obj3={
+	name:'gpdObj',
+	getName:function(){
+		console.log(this);
+		return function(){
+			console.log(this);
+			return this.name;
+		}
+	}
+};
+
+console.log(obj3.getName()());//gpd obj3.getName运行环境是obj3,obj3.getName()返回的匿名函数执行环境为window
+
+
+
+		</script>
+	</div>
+</div>
+
+<div id="footer-wrap">
+	<div class="goTop">
+		<a id="rocket" href="#top" title="返回顶部" class="show"> <i></i>
+		</a>
+	</div>
+	<div id="footer" class="section">
+		<p>Write more, Think more!</p>
+		<p>Copyright©2014-2016 郭佩东博客</p>
+	</div>
+</div>
+</body>
+</html>
