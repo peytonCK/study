@@ -6,6 +6,7 @@
 	<title>jQuery分析</title>
 	<link rel="shortcut icon" href="/favicon.ico" />
 	<link href="./style.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="./jquery.min.js"></script>
 </head>
 <body>
 	<div id="header-wrap">
@@ -24,8 +25,8 @@
 		<h1>这是用来练习Jquery的demo</h1><br/><br/>
 		<script>
           console.log('undefined' in window);//true undefined是window的一个属性
-          console.log(undefined='test123');
-
+          console.log(undefined='test123');//test123  高阶浏览器不能修改此属性
+          console.log($('<div ><span>123123123</span></div>'));
 		</script>
 	</div>
 </div>
