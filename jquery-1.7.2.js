@@ -1079,14 +1079,14 @@ jQuery.Callbacks = function( flags ) {
 			}
 			firing = false;
 			if ( list ) {
-				if ( !flags.once ) {
+				if ( !flags.once ) {//非once
 					if ( stack && stack.length ) {
 						memory = stack.shift();
 						self.fireWith( memory[ 0 ], memory[ 1 ] );
 					}
-				} else if ( memory === true ) {
+				} else if ( memory === true ) {//once+非memory once+stopOnFalse(return false)
 					self.disable();
-				} else {
+				} else {//once+memory
 					list = [];
 				}
 			}

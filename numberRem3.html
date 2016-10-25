@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width , initial-scale=1.0 , user-scalable=0 , minimum-scale=1.0 , maximum-scale=1.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>扑克牌编码记忆</title>
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link href="./style.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="./jquery.min.js"></script>
+	<style>
+		#content{
+			padding:0px;
+		}
+		#action-area{
+			text-align: center;
+		}
+		#action-area header{
+			display: none;
+			font-size: 16px;
+			float: right;
+			text-align: right;
+		}
+		#btn-start,#btn-restart{
+			display: block;
+			margin:50px auto;
+			width:120px;
+			height:60px;
+			line-height: 60px;
+			font-size: 20px;
+			background: #ededed;
+			border:1px solid #ddd;
+		}
+		#numberCode{
+			display: none;
+			width:300px;
+			text-align: center;
+			margin:0px auto;
+			background: #ddd;
+		}
+		#numberCode img{
+			width: 100px;
+			margin:40px auto;
+		}
+		#numberCode a{
+			display: inline-block;
+			font-size: 14px;
+			margin:10px;
+			opacity: 0.5;
+		}
+
+		#result{
+			display: none;
+		}
+
+		#result h2{
+			font-size: 20px;
+			margin:20px auto;
+		}
+	</style>
+</head>
+<body>
+	<div id="header-wrap">
+		<div id="header">
+			<div class="section">
+				<a class="logo" href="http://www.guopeidong.com/" title="GPD" rel="home">
+					<img src="http://www.guopeidong.com/wp-content/uploads/2014/06/gpd.png" alt="GPD"></a>
+				<span class="target-words">前端开发-郭佩东</br> <i>Write more, Think more!</i>
+			</span>
+		</div>
+	</div>
+</div>
+
+<div id="content-wrap">
+	<div id="content" class="section" style="min-height: 300px; background: #ffffff; margin-top:20px;">
+		<h1 style="padding-top:20px; margin-left:20px;">扑克编码记忆</h1><br/><br/>
+		<section id="action-area">
+			<header>集中注意力！用时:<span id="total-time">0</span>秒</header>
+			<a href="javascript:void(0);" id="btn-start">开始</a>
+			<div id="numberCode">
+				<img src="./images/cards/10.jpg" alt=""/><br/>
+				<a href="javascript:void(0)" id="btn-prev">上一张</a>
+				<a href="javascript:void(0)" id="btn-next">下一张</a>
+				<a href="javascript:void(0)" id="btn-refresh">重新来</a>
+			</div>
+			<div id="result">
+				<h2></h2>
+				<a href="javascript:void(0)" id="btn-restart">再来一次</a>
+				<a href="javascript:void(0)" id="btn-viewRank">查看顺序</a>
+			</div>
+			<div id="rank">
+				<p></p>
+			</div>
+		</section>
+
+    <script>
+       var numberCode=["10","11","12","13","14","15","16","17","18","19","1a","1b","1c",
+       					"20","21","22","23","24","25","26","27","28","29","2a","2b","2c",
+       					"30","31","32","33","34","35","36","37","38","39","3a","3b","3c",
+       					"40","41","42","43","44","45","46","47","48","49","4a","4b","4c",
+       					"a","b"];
+
+var tempArray=[],copyNumberCode=[],currentIndex=0,totalTime=0;
+
+function start(){
+	//第一步，将编码顺序打乱
+	tempArray=[];
+	copyNumberCode=numberCode.slice(0);
+	while(copyNumberCode.length){
+   		var n=copyNumberCode.length;
+   		var index=parseInt(Math.random()*n,10);
+   		tempArray.push(copyNumberCode[index]);
+   		copyNumberCode.splice(index,1);
+	}
+
+	//第二步，开始计时
+	totalTime=0;
+	timeInterval=setInterval(function(){
+		++totalTime;
+		$("#total-time").text(totalTime);
+	},1000);
+
+	//第三步，显示第一个数字
+	currentIndex=0;
+	goIndex();
+}
+
+function goIndex(){
+	if(currentIndex<0){//如果往前走，达到第一张还点上一张
+		currentIndex=0;
+		alert("已经是第一张！");
+		return false;
+	}
+	if(currentIndex<tempArray.length){//正常上下翻
+		$("#btn-start").hide();
+		$("#result,#rank").hide();
+		$("#numberCode").show();
+		$("#numberCode img").attr("src","./images/cards/"+tempArray[currentIndex]+".jpg");
+
+		var tempHtml=$("#rank p").html();
+		$("#rank p").html(tempHtml+" "+tempArray[currentIndex]);
+	}else{//全部完成，展示结束页
+		$("#numberCode").hide();
+		$("#result").show();
+		$("#result h2").text("本次用时："+totalTime+"秒！");
+		clearInterval(timeInterval);
+	}
+}
+
+$("a#btn-start,a#btn-restart,a#btn-refresh").click(function(){
+	start();
+});
+
+$("a#btn-viewRank").click(function(){
+	$("#rank").show();
+});
+
+$("a#btn-prev").click(function(){
+	currentIndex--;
+	goIndex();
+});
+
+$("a#btn-next").click(function(){
+	currentIndex++;
+	goIndex();
+});
+
+
+
+    </script>
+	</div>
+</div>
+
+<div id="footer-wrap">
+	<div class="goTop">
+		<a id="rocket" href="#top" title="返回顶部" class="show"> <i></i>
+		</a>
+	</div>
+	<div id="footer" class="section">
+		<p>Write more, Think more!</p>
+		<p>Copyright©2014-2016 郭佩东博客</p>
+	</div>
+</div>
+</body>
+</html>

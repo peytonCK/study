@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width , initial-scale=1.0 , user-scalable=0 , minimum-scale=1.0 , maximum-scale=1.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>jQuery分析</title>
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link href="./style.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="./jquery.min.js"></script>
+</head>
+<body>
+	<div id="header-wrap">
+		<div id="header">
+			<div class="section">
+				<a class="logo" href="http://www.guopeidong.com/" title="GPD" rel="home">
+					<img src="http://www.guopeidong.com/wp-content/uploads/2014/06/gpd.png" alt="GPD"></a>
+				<span class="target-words">前端开发-郭佩东</br> <i>Write more, Think more!</i>
+			</span>
+		</div>
+	</div>
+</div>
+
+<div id="content-wrap">
+	<div id="content" class="section" style="min-height: 300px; background: #ffffff; margin-top:20px; padding:50px;">
+		<h1>这是用来练习Jquery queue的demo</h1><br/><br/>
+		
+	</div>
+</div>
+
+<script>
+         $("#content").fadeIn().delay(3000).queue(function(next){
+         	var $this=$(this).append('$.ajax loading...');
+         	$.ajax('/testJson.json')
+         	.done(function(){$this.append('done!</br>');})
+         	.done(function(data){$this.append(JSON.stringify(data));})
+         	.done(function(){next();})
+         	.fail(function(){$this.append('fail!</br>')});
+         })
+         .delay(3000)
+         .fadeOut();
+
+		</script>
+
+<div id="footer-wrap">
+	<div class="goTop">
+		<a id="rocket" href="#top" title="返回顶部" class="show"> <i></i>
+		</a>
+	</div>
+	<div id="footer" class="section">
+		<p>Write more, Think more!</p>
+		<p>Copyright©2014-2016 郭佩东博客</p>
+	</div>
+</div>
+</body>
+</html>

@@ -21,9 +21,26 @@
 
 <div id="content-wrap">
 	<div id="content" class="section" style="min-height: 300px; background: #ffffff; margin-top:20px; padding:50px;">
-		<h1>这是用来测试 jquery框架的Demo</h1><br/><br/>
+		<h1>这是用来测试 Html5 history.pushState() 方法</h1><br/><br/>
+		<a href="bar.html" id="changeLocation" >点下我，改变地址栏里的地址</a>
+		<a href="bar2.html" id="changeLocation2" >点下我，改变地址栏里的地址</a>
 		<script>
-		    
+            document.getElementById("changeLocation").onclick=changeLocation;
+            document.getElementById("changeLocation2").onclick=changeLocation2;
+             window.onpopstate = function (e) { 
+             	document.title = e.state.title;
+             }
+		    function changeLocation(){
+		    	 var state = { foo: "bar",title:"H5 pushState" }; 
+		    	 history.pushState(state, "page 2", "bar.html");
+		    	 document.title = "page 无刷新";
+		    	
+		    	 return false;
+		    } 
+		    function changeLocation2(){
+		    	 var stateObj = { foo: "bar" }; history.replaceState(stateObj, "page 2", "bar2.html");
+		    	 return false;
+		    } 
 		</script>
 	</div>
 </div>
